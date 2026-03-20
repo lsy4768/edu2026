@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ko" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>즐거운 미술 여행: 미술사의 흐름</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Tailwind config for dark mode support
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&display=swap');
+        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            scroll-behavior: smooth;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        .dark .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .concept-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+        }
+
+        .concept-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .quiz-option {
+            transition: all 0.2s ease;
+        }
+        .quiz-option:hover {
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-200">
+
+    <!-- Theme Toggle Button -->
+    <div class="fixed top-4 right-4 z-[100]">
+        <button onclick="toggleTheme()" id="theme-toggle" class="p-3 rounded-full bg-white dark:bg-slate-800 shadow-lg border border-slate-200 dark:border-slate-700 transition-all hover:scale-110">
+            <span id="theme-icon-light" class="text-xl">🌙</span>
+            <span id="theme-icon-dark" class="text-xl hidden">☀️</span>
+        </button>
+    </div>
+
+    <!-- Hero Section -->
+    <header class="hero-gradient text-white py-20 px-6 text-center shadow-lg">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-4xl md:text-6xl font-black mb-4 animate__animated animate__fadeInDown">
+                🎨 미술사 역사 여행
+            </h1>
+            <p class="text-lg md:text-xl opacity-90 mb-8 animate__animated animate__fadeInUp">
+                인류의 기록에서 현대의 감각까지, 미술의 흐름을 한눈에 살펴봅시다.
+            </p>
+            <a href="#timeline-section" class="bg-white text-indigo-600 px-8 py-3 rounded-full font-bold hover:bg-opacity-90 transition-all">
+                수업 시작하기
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Navigation -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b dark:border-slate-800 shadow-sm">
+        <div class="max-w-5xl mx-auto flex justify-around p-4">
+            <button onclick="showSection('timeline-section')" class="nav-btn font-bold text-indigo-600 border-b-2 border-indigo-600 pb-1 dark:text-indigo-400 dark:border-indigo-400">1. 미술사 흐름</button>
+            <button onclick="showSection('concept-section')" class="nav-btn font-bold text-gray-500 hover:text-indigo-500 transition-colors dark:text-slate-400 dark:hover:text-indigo-300">2. 기본 개념 & 퀴즈</button>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-6 py-12">
+        
+        <!-- Section 1: History Timeline -->
+        <section id="timeline-section" class="tab-content active">
+            <h2 class="text-3xl font-bold mb-10 text-center dark:text-white">📜 미술사 타임라인 (Timeline)</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-12">
+                <button onclick="showEra('prehistoric')" class="era-btn p-4 bg-indigo-50 dark:bg-indigo-900/30 rounded-xl border-2 border-indigo-200 dark:border-indigo-800 hover:bg-indigo-100 transition-all font-bold text-sm md:text-base">원시~고대</button>
+                <button onclick="showEra('renaissance')" class="era-btn p-4 bg-gray-50 dark:bg-slate-800/50 rounded-xl border-2 border-transparent hover:bg-gray-100 dark:hover:bg-slate-800 transition-all font-bold text-sm md:text-base">르네상스</button>
+                <button onclick="showEra('modern')" class="era-btn p-4 bg-gray-50 dark:bg-slate-800/50 rounded-xl border-2 border-transparent hover:bg-gray-100 dark:hover:bg-slate-800 transition-all font-bold text-sm md:text-base">근대 인상주의</button>
+                <button onclick="showEra('contemporary')" class="era-btn p-4 bg-gray-50 dark:bg-slate-800/50 rounded-xl border-2 border-transparent hover:bg-gray-100 dark:hover:bg-slate-800 transition-all font-bold text-sm md:text-base">현대 미술</button>
+            </div>
+
+            <div id="era-display" class="glass-card rounded-3xl p-8 shadow-xl min-h-[400px]">
+                <div id="era-content" class="flex flex-col md:flex-row items-center gap-8">
+                    <div class="flex-1">
+                        <h3 id="era-title" class="text-4xl font-black text-indigo-600 dark:text-indigo-400 mb-4">원시 미술 (Prehistoric)</h3>
+                        <p id="era-desc" class="text-lg leading-relaxed text-slate-600 dark:text-slate-300">
+                            인류 최초의 미술은 생존과 신앙에서 시작되었습니다. 동굴 벽에 그려진 동물들은 사냥의 성공을 기원하는 주술적인 의미를 담고 있었죠.
+                        </p>
+                        <ul id="era-points" class="mt-6 space-y-2">
+                            <li class="flex items-center gap-2"><span class="text-indigo-500 dark:text-indigo-400">✔</span> 알타미라, 라스코 동굴 벽화</li>
+                            <li class="flex items-center gap-2"><span class="text-indigo-500 dark:text-indigo-400">✔</span> 빌렌도르프의 비너스</li>
+                        </ul>
+                    </div>
+                    <div class="flex-1 bg-slate-200 dark:bg-slate-800 rounded-2xl h-64 w-full flex items-center justify-center overflow-hidden">
+                        <div id="era-img-placeholder" class="text-slate-400 dark:text-slate-500 text-center">
+                            <span class="text-6xl">🏺</span><br>
+                            [이미지: 원시 미술 유물]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Basic Concepts & Quiz -->
+        <section id="concept-section" class="tab-content">
+            <h2 class="text-3xl font-bold mb-4 text-center dark:text-white">💡 미술의 기본 개념</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mb-16">
+                <div class="concept-card bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col items-center text-center">
+                    <div class="w-20 h-20 bg-blue-100 dark:bg-blue-900/40 rounded-full flex items-center justify-center mb-6 text-4xl">📐</div>
+                    <h3 class="text-2xl font-bold mb-4 dark:text-white">주제 1: 형태와 색채</h3>
+                    <p class="text-slate-600 dark:text-slate-300 leading-relaxed">고전 미술의 비례와 인상주의의 색채 변화를 비교해 보세요.</p>
+                </div>
+                <div class="concept-card bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col items-center text-center">
+                    <div class="w-20 h-20 bg-rose-100 dark:bg-rose-900/40 rounded-full flex items-center justify-center mb-6 text-4xl">🔄</div>
+                    <h3 class="text-2xl font-bold mb-4 dark:text-white">주제 2: 전통과 혁신</h3>
+                    <p class="text-slate-600 dark:text-slate-300 leading-relaxed">과거를 배우고 파괴하며 새로운 가치를 창조하는 미술의 역사입니다.</p>
+                </div>
+            </div>
+
+            <!-- QUIZ SECTION -->
+            <div id="quiz-container" class="max-w-2xl mx-auto bg-slate-900 dark:bg-slate-900/50 text-white rounded-3xl shadow-2xl overflow-hidden border border-slate-800">
+                <div class="p-8">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-2xl font-bold text-indigo-400"> 시대별 작품 퀴즈 🎨</h3>
+                        <span id="quiz-progress" class="bg-indigo-800 px-3 py-1 rounded-full text-sm">1 / 3</span>
+                    </div>
+
+                    <div id="quiz-question-box" class="text-center py-6 animate__animated">
+                        <div id="quiz-image" class="text-8xl mb-6">🖼️</div>
+                        <p id="quiz-question-text" class="text-xl font-medium mb-8">다음 설명에 해당하는 시대는 언제일까요?</p>
+                    </div>
+
+                    <div id="quiz-options" class="grid grid-cols-1 gap-3">
+                        <!-- Options injected by JS -->
+                    </div>
+
+                    <div id="quiz-feedback" class="mt-6 text-center font-bold h-8"></div>
+                    
+                    <div id="next-step-container" class="hidden mt-8 text-center pt-6 border-t border-slate-700 animate__animated animate__fadeIn">
+                        <p class="text-yellow-400 mb-4 font-bold">🎉 모든 문제를 맞혔습니다! 다음 단계로 이동합니다.</p>
+                        <button onclick="location.href='./01/index.html'" class="bg-indigo-500 hover:bg-indigo-600 px-10 py-3 rounded-full font-black text-lg shadow-lg transform transition-all hover:scale-105">
+                            실습 페이지로 이동 (./01/index.html)
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-100 dark:bg-slate-900/50 py-10 text-center border-t dark:border-slate-800">
+        <p class="text-slate-400 dark:text-slate-500">© 2024 중학교 미술 수업 자료 | 미술은 세상을 보는 창입니다.</p>
+    </footer>
+
+    <script>
+        // --- THEME LOGIC ---
+        function toggleTheme() {
+            const html = document.documentElement;
+            const isDark = html.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            updateThemeIcons(isDark);
+        }
+
+        function updateThemeIcons(isDark) {
+            document.getElementById('theme-icon-light').classList.toggle('hidden', isDark);
+            document.getElementById('theme-icon-dark').classList.toggle('hidden', !isDark);
+        }
+
+        // Initialize theme from storage or system preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            updateThemeIcons(true);
+        } else {
+            document.documentElement.classList.remove('dark');
+            updateThemeIcons(false);
+        }
+
+        // --- ART HISTORY DATA ---
+        const eras = {
+            prehistoric: { title: "원시~고대 미술", desc: "인류 최초의 미술은 생존과 신앙에서 시작되었습니다. 동굴 벽에 그려진 동물들은 사냥의 성공을 기원하는 주술적인 의미를 담고 있었죠. 고대 이집트는 영생을 위해 엄격한 규칙의 미술을 발전시켰습니다.", points: ["알타미라 벽화", "빌렌도르프 비너스"], icon: "🏺" },
+            renaissance: { title: "르네상스", desc: "인간 중심의 사고와 사실적 묘사가 시작된 시기입니다. 해부학과 원근법을 통해 세상을 과학적으로 분석하기 시작했습니다.", points: ["레오나르도 다빈치", "미켈란젤로"], icon: "🏛️" },
+            modern: { title: "근대 인상주의", desc: "빛의 변화와 화가의 즉각적인 인상을 포착한 시기입니다. 튜브 물감의 발명으로 화가들이 야외로 나갈 수 있게 되었습니다.", points: ["클로드 모네", "빈센트 반 고흐"], icon: "🎨" },
+            contemporary: { title: "현대 미술", desc: "아이디어와 철학이 예술이 되는 시대입니다. 전통적인 경계를 허물고 다양한 매체와 개념을 예술로 승화시킵니다.", points: ["앤디 워홀", "백남준 미디어아트"], icon: "🚀" }
+        };
+
+        const quizData = [
+            {
+                image: "🐂",
+                question: "'알타미라 동굴'에 그려진 동물 그림으로 주술적 의미를 담은 시대는?",
+                options: ["원시~고대", "르네상스", "인상주의", "현대미술"],
+                answer: 0
+            },
+            {
+                image: "🗼",
+                question: "원근법을 발명하고 사실적으로 인체를 묘사하기 시작한 '다빈치'의 시대는?",
+                options: ["원시미술", "르네상스", "인상주의", "팝아트"],
+                answer: 1
+            },
+            {
+                image: "🥫",
+                question: "일상적인 통조림이나 변기도 예술이 될 수 있다고 생각하는 시대는?",
+                options: ["고대미술", "르네상스", "인상주의", "현대미술"],
+                answer: 3
+            }
+        ];
+
+        let currentQuizIndex = 0;
+
+        function initQuiz() {
+            const quiz = quizData[currentQuizIndex];
+            document.getElementById('quiz-progress').innerText = `${currentQuizIndex + 1} / ${quizData.length}`;
+            document.getElementById('quiz-image').innerText = quiz.image;
+            document.getElementById('quiz-question-text').innerText = quiz.question;
+            
+            const optionsBox = document.getElementById('quiz-options');
+            optionsBox.innerHTML = '';
+            
+            quiz.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "quiz-option w-full bg-slate-800 p-4 rounded-xl text-left border border-slate-700 hover:border-indigo-500 font-medium transition-all";
+                btn.innerText = `${idx + 1}. ${opt}`;
+                btn.onclick = () => checkAnswer(idx);
+                optionsBox.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedIdx) {
+            const quiz = quizData[currentQuizIndex];
+            const feedback = document.getElementById('quiz-feedback');
+            
+            if (selectedIdx === quiz.answer) {
+                feedback.innerText = "정답입니다! 👏";
+                feedback.className = "mt-6 text-center font-bold h-8 text-green-400 animate__animated animate__pulse";
+                
+                setTimeout(() => {
+                    currentQuizIndex++;
+                    if (currentQuizIndex < quizData.length) {
+                        initQuiz();
+                        feedback.innerText = "";
+                    } else {
+                        document.getElementById('quiz-question-box').classList.add('animate__fadeOutUp');
+                        document.getElementById('quiz-options').style.display = 'none';
+                        document.getElementById('next-step-container').classList.remove('hidden');
+                    }
+                }, 1000);
+            } else {
+                feedback.innerText = "다시 한번 생각해볼까요? 🤔";
+                feedback.className = "mt-6 text-center font-bold h-8 text-rose-400 animate__animated animate__headShake";
+            }
+        }
+
+        function showEra(eraKey) {
+            const data = eras[eraKey];
+            const display = document.getElementById('era-display');
+            display.style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('era-title').innerText = data.title;
+                document.getElementById('era-desc').innerText = data.desc;
+                document.getElementById('era-img-placeholder').innerHTML = `<span class="text-6xl">${data.icon}</span><br>[이미지: ${data.title}]`;
+                const pointsList = document.getElementById('era-points');
+                pointsList.innerHTML = '';
+                data.points.forEach(p => { 
+                    pointsList.innerHTML += `<li class='flex items-center gap-2'><span class='text-indigo-500 dark:text-indigo-400'>✔</span> ${p}</li>`; 
+                });
+                
+                document.querySelectorAll('.era-btn').forEach(btn => {
+                    btn.classList.remove('bg-indigo-50', 'dark:bg-indigo-900/30', 'border-indigo-200', 'dark:border-indigo-800');
+                    btn.classList.add('bg-gray-50', 'dark:bg-slate-800/50', 'border-transparent');
+                    if (btn.innerText.includes(data.title.substring(0, 2))) {
+                        btn.classList.add('bg-indigo-50', 'dark:bg-indigo-900/30', 'border-indigo-200', 'dark:border-indigo-800');
+                        btn.classList.remove('bg-gray-50', 'dark:bg-slate-800/50', 'border-transparent');
+                    }
+                });
+
+                display.style.opacity = '1';
+                display.classList.add('animate__animated', 'animate__fadeIn');
+            }, 300);
+        }
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.tab-content').forEach(s => s.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-indigo-600', 'border-b-2', 'border-indigo-600', 'dark:text-indigo-400', 'dark:border-indigo-400');
+                btn.classList.add('text-gray-500', 'dark:text-slate-400');
+            });
+            const activeBtn = Array.from(document.querySelectorAll('.nav-btn')).find(b => 
+                (sectionId === 'timeline-section' && b.innerText.includes('흐름')) ||
+                (sectionId === 'concept-section' && b.innerText.includes('개념'))
+            );
+            activeBtn.classList.add('text-indigo-600', 'border-b-2', 'border-indigo-600', 'dark:text-indigo-400', 'dark:border-indigo-400');
+            activeBtn.classList.remove('text-gray-500', 'dark:text-slate-400');
+            if (sectionId === 'concept-section') initQuiz();
+        }
+
+        window.onload = initQuiz;
+    </script>
+</body>
+</html>
